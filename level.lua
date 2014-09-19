@@ -14,6 +14,13 @@ local Level={
 			x = nil,
 			y = nil
 
+		},
+			
+		start = {
+			size = nil,
+			x = nil,
+			y = nil
+
 		}
 	},
 	world = nil
@@ -33,9 +40,11 @@ end
 function Level:create()
 	groundI=1
 	otherI=1
+	startI=1
 	self.box[1]={}
 	self.box[2]={}
-
+	self.box[3]={}
+	local jx,jy
 
 
 	for i=1,#self.matrix do
@@ -47,9 +56,15 @@ function Level:create()
 				self.box[2][otherI]={other = {size=100,x=100*(j-1),y=100*(i-1)}}
 				otherI = otherI + 1
 
+			elseif self.matrix[i][j] == 3 then
+				self.box[3][startI]={start = {size=100,x=100*(j-1),y=100*(i-1)}}
+				startI = startI + 1
+				jx = 100*(i-1)
+				jy = 100*(j-1)
 			end
 		end
 	end
+	return jx,jy
 end
 
 
@@ -66,6 +81,11 @@ function Level:draw(x,y,size)
 		love.graphics.rectangle("fill",self.box[1][i].ground.x-x+WIDTH/2,self.box[1][i].ground.y-y+HEIGHT/2,self.box[1][i].ground.size,self.box[1][i].ground.size)
 	end
 
+	for i=1,startI-1 do
+
+		love.graphics.setColor(yellow)
+		love.graphics.rectangle("fill",self.box[3][i].start.x-x+WIDTH/2,self.box[3][i].start.y-y+HEIGHT/2,self.box[3][i].start.size,self.box[3][i].start.size)
+	end
 end
 
 function Level.collide(x1,y1,w1,h1,x2,y2,w2,h2)

@@ -16,11 +16,11 @@ Player.__index=Player
 
 function Player.new()
 	local self = setmetatable({},Player)
-	self.x = 650/2
-	self.y = 200
+	self.x = 800
+	self.y = 600
 	self.size = 50
-	self.orix = 650/2
-	self.oriy= 200
+--	self.orix = 650/2
+--	self.oriy= 200
 	return self
 end
 
@@ -113,5 +113,13 @@ function Player:move(dt)
 	bottom = false
 
 end
+
+function Player:location()
+
+	self.y = self.y + 3*self.size
+	self.x = self.x - self.size
+
+end
+
 
 return Player

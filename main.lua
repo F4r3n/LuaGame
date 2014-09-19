@@ -4,7 +4,7 @@ blue={51,51,255,255}
 green={51,102,0,255}
 red = {255,0,0,255}
 orange = {255,128,0,255}
-yellow = {255,255,0,255}
+yellow = {255,255,0,100}
 grey = {96,96,96,255}
 gravity=600
 top = false
@@ -35,7 +35,10 @@ function love.load()
 	player = Player.new()
 	laser = Laser.new()
 	menu = Menu.new()
-	level:create()
+
+	player.x,player.y = level:create()
+	player:location()
+
 	love.graphics.setColor(grey)
 	love.window.setMode(WIDTH,HEIGHT)
 	love.window.setTitle("Bounce the ball")
@@ -60,7 +63,7 @@ function love.update(dt)
 			laser:create(love.mouse.getX(),love.mouse.getY(),player.x,player.y,player.size)
 		end
 	end
-		if imenu or ioption then
+	if imenu or ioption then
 		menu:touch(love.mouse.getX(),love.mouse.getY())
 
 	end
