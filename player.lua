@@ -7,7 +7,13 @@ local Player = {
 	yVelocity = 0,
 	jumpVelocity = -400,
 	orix = nil,
-	oriy = nil
+	oriy = nil,
+	side = {},
+	top = {},
+	img = love.graphics.newImage("Achilles2.png"),
+	quad = {},
+	i = nil,
+	dir = 1.5
 
 }
 
@@ -18,15 +24,41 @@ function Player.new()
 	local self = setmetatable({},Player)
 	self.x = 800
 	self.y = 600
-	self.size = 50
---	self.orix = 650/2
---	self.oriy= 200
-	return self
+	self.size = 60
+	self.side = {}
+	self.top = {}
+	self.i = 1
+	self.quad = {love.graphics.newQuad(5,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(45,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(86,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(127,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(168,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(209,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(250,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(291,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(327,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(372,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(411,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(450,72,35,43,self.img:getWidth(),self.img:getHeight())
+}
+
+
+return self
 end
 
 function Player:draw()
-	love.graphics.setColor(white)
-	love.graphics.rectangle("fill",WIDTH/2,HEIGHT/2,self.size,self.size)
+--	love.graphics.setColor(white)
+--	love.graphics.rectangle("fill",WIDTH/2,HEIGHT/2,self.size,self.size)
+--	print(self.img:getWidth(),self.quad[self.i])
+	--	love.graphics.setColorMask(bgSprite)
+	if self.dir < 0 then
+		love.graphics.draw(self.img,self.quad[self.i],WIDTH/2+self.size,HEIGHT/2,0,self.dir,1.5)
+
+	else
+		love.graphics.draw(self.img,self.quad[self.i],WIDTH/2,HEIGHT/2,0,self.dir,1.5)
+
+	end
+
 end
 
 function Player:move(dt)
@@ -37,6 +69,18 @@ function Player:move(dt)
 
 	if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
 
+		timer = (1/5+timer)%2
+
+		self.i = (self.i+math.floor(timer))%12
+		self.dir =-1.5
+
+		if math.floor(timer) == 1 then
+			timer = 0
+		end
+
+		if self.i == 0 then
+			self.i =1
+		end
 		if not right then
 			self.xVelocity = self.speed
 
@@ -50,6 +94,19 @@ function Player:move(dt)
 
 
 	if love.keyboard.isDown("q") or love.keyboard.isDown("left") then
+
+		timer = (1/5+timer)%2
+
+		self.i = (self.i+math.floor(timer))%12
+		self.dir =1.5
+
+		if math.floor(timer) == 1 then
+			timer = 0
+		end
+
+		if self.i == 0 then
+			self.i =1
+		end
 		if not left then 
 			self.xVelocity = -1*self.speed
 		elseif left then 
@@ -116,7 +173,7 @@ end
 
 function Player:location()
 
-	self.y = self.y + 3*self.size
+	self.y = self.y + 2*self.size
 	self.x = self.x - self.size
 
 end

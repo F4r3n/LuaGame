@@ -83,7 +83,7 @@ function Level:draw(x,y,size)
 
 	for i=1,startI-1 do
 
-		love.graphics.setColor(yellow)
+		love.graphics.setColor(dblue)
 		love.graphics.rectangle("fill",self.box[3][i].start.x-x+WIDTH/2,self.box[3][i].start.y-y+HEIGHT/2,self.box[3][i].start.size,self.box[3][i].start.size)
 	end
 end
