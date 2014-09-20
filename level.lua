@@ -23,7 +23,8 @@ local Level={
 
 		}
 	},
-	world = nil
+	jx = nil,
+	jy = nil
 }
 
 Level.__index=Level
@@ -44,7 +45,6 @@ function Level:create()
 	self.box[1]={}
 	self.box[2]={}
 	self.box[3]={}
-	local jx,jy
 
 
 	for i=1,#self.matrix do
@@ -59,12 +59,11 @@ function Level:create()
 			elseif self.matrix[i][j] == 3 then
 				self.box[3][startI]={start = {size=100,x=100*(j-1),y=100*(i-1)}}
 				startI = startI + 1
-				jx = 100*(i-1)
-				jy = 100*(j-1)
+				self.jx = 100*(j-1)
+				self.jy = 100*(i-1)
 			end
 		end
 	end
-	return jx,jy
 end
 
 

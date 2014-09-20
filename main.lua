@@ -30,7 +30,7 @@ Level = require 'level'
 Player = require 'player'
 Laser = require 'laser'
 Menu = require 'menu'
-
+Mob = require 'mob'
 
 
 function love.load()
@@ -39,9 +39,14 @@ function love.load()
 	player = Player.new()
 	laser = Laser.new()
 	menu = Menu.new()
+	mob = Mob.new(niveau)
 
-	player.x,player.y = level:create()
-	player:location()
+
+	level:create()
+	mob:create()
+	player.x = level.jx
+	player.y = level.jy
+	--	player:location()
 
 	love.graphics.setColor(grey)
 	love.window.setMode(WIDTH,HEIGHT)
@@ -68,7 +73,6 @@ function love.update(dt)
 		player:move(dt)
 		laser:update(dt,player.x,player.y,player.size)
 		if love.mouse.isDown("l") then
-			laser:create(love.mouse.getX(),love.mouse.getY(),player.x,player.y,player.size)
 		end
 	end
 	if imenu or ioption then
@@ -83,6 +87,7 @@ function love.draw()
 		level:draw(player.x,player.y,player.size)
 		player:draw()
 		laser:draw()
+		mob:draw(player.x,player.y,player.size)
 		if info then
 			love.graphics.print("FPS "..tostring(love.timer.getFPS()),10,10)
 		end
@@ -109,6 +114,8 @@ function love.mousepressed(x,y,button)
 	if button == "l" then
 		if imenu or ioption then
 			menu:click(x,y)
+		elseif istart then
+			laser:create(love.mouse.getX(),love.mouse.getY(),player.x,player.y,player.size)
 		end
 	end 
 end

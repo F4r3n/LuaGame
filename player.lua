@@ -24,19 +24,19 @@ function Player.new()
 	local self = setmetatable({},Player)
 	self.x = 800
 	self.y = 600
-	self.size = 60
+	self.size = 67
 	self.side = {}
 	self.top = {}
 	self.i = 1
 	self.quad = {love.graphics.newQuad(5,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(45,72,35,43,self.img:getWidth(),self.img:getHeight()),
-	love.graphics.newQuad(86,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(86,72,40,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(127,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(168,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(209,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(250,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(291,72,35,43,self.img:getWidth(),self.img:getHeight()),
-	love.graphics.newQuad(327,72,35,43,self.img:getWidth(),self.img:getHeight()),
+	love.graphics.newQuad(327,72,40,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(372,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(411,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(450,72,35,43,self.img:getWidth(),self.img:getHeight())
@@ -50,7 +50,8 @@ function Player:draw()
 --	love.graphics.setColor(white)
 --	love.graphics.rectangle("fill",WIDTH/2,HEIGHT/2,self.size,self.size)
 --	print(self.img:getWidth(),self.quad[self.i])
-	--	love.graphics.setColorMask(bgSprite)
+	love.graphics.setColor(white)
+
 	if self.dir < 0 then
 		love.graphics.draw(self.img,self.quad[self.i],WIDTH/2+self.size,HEIGHT/2,0,self.dir,1.5)
 
@@ -171,12 +172,6 @@ function Player:move(dt)
 
 end
 
-function Player:location()
-
-	self.y = self.y + 2*self.size
-	self.x = self.x - self.size
-
-end
 
 
 return Player
