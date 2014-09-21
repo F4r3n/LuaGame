@@ -5,7 +5,7 @@ local Level={
 		ground = {
 			size = nil,
 			x = nil,
-			y = nil
+			y = nil,
 
 		},
 
@@ -21,7 +21,10 @@ local Level={
 			x = nil,
 			y = nil
 
-		}
+		},
+		g = nil,
+		o = nil,
+		s = nil
 	},
 	jx = nil,
 	jy = nil
@@ -43,23 +46,29 @@ function Level:create()
 	otherI=1
 	startI=1
 	self.box[1]={}
+	self.box[1].n = 1
 	self.box[2]={}
+	self.box[2].o = 1
 	self.box[3]={}
+	self.box[3].s = 1
 
 
 	for i=1,#self.matrix do
 		for j=1,#self.matrix[i] do
 			if self.matrix[i][j] == 1 then
 				self.box[1][groundI]={ground = {size=100,x=100*(j-1),y=100*(i-1)}}
+				self.box[1].n = self.box[1].n +1
 				groundI = groundI+1
 			elseif self.matrix[i][j] == 0 then
 				self.box[2][otherI]={other = {size=100,x=100*(j-1),y=100*(i-1)}}
 				otherI = otherI + 1
+				self.box[2].o = self.box[2].o +1
 
 			elseif self.matrix[i][j] == 3 then
 				self.box[3][startI]={start = {size=100,x=100*(j-1),y=100*(i-1)}}
 				startI = startI + 1
 				self.jx = 100*(j-1)
+				self.box[3].s = self.box[3].s +1
 				self.jy = 100*(i-1)
 			end
 		end
@@ -69,7 +78,7 @@ end
 
 function Level:draw(x,y,size)
 
-	for i=1,otherI-1 do
+	for i=1,self.box[2].o-1 do
 
 		love.graphics.setColor(blue)
 		love.graphics.rectangle("fill",self.box[2][i].other.x-x+WIDTH/2,self.box[2][i].other.y-y+HEIGHT/2,self.box[2][i].other.size,self.box[2][i].other.size)

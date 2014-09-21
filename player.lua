@@ -80,14 +80,14 @@ function Player:move(dt)
 		end
 
 		if self.i == 0 then
-			self.i =1
+			self.i = 1
 		end
 		if not right then
 			self.xVelocity = self.speed
 
 		elseif right then  
 			self.xVelocity = 0
-			self.x = self.x - 1
+		--	self.x = self.x - 1
 			right = false
 		end
 
@@ -112,7 +112,7 @@ function Player:move(dt)
 			self.xVelocity = -1*self.speed
 		elseif left then 
 			self.xVelocity = 0
-			self.x = self.x + 1
+		--	self.x = self.x + 1
 			left = false
 		end
 	end
@@ -164,7 +164,7 @@ function Player:move(dt)
 	self.x = self.x + self.xVelocity*dt
 	self.y = self.y + self.yVelocity*dt
 	self.yVelocity = self.yVelocity + gravity*dt
-
+--Eviter glissement
 	if  bottom then
 		self.xVelocity = 0
 	end

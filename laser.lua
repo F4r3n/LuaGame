@@ -61,7 +61,7 @@ function Laser:draw()
 		for i=1, self.n-1 do
 			if self.pos[i].ok then
 
-			love.graphics.rectangle("fill",self.pos[i].x,self.pos[i].y,self.size,self.size);
+			love.graphics.circle("fill",self.pos[i].x,self.pos[i].y,5);
 
 		end
 	end

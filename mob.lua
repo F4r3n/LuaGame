@@ -8,9 +8,13 @@ Mob = {
 		height = 30,
 		attack = 0,
 		alive = true,
-		bottom = true,
-		left = true,
-		right = true,
+		bottom = false,
+		left = false,
+		right = false,
+		top = false,
+		xVelocity = 0,
+		yVelocity = 0,
+		speed = 200 ,
 		n = 1
 
 	},
@@ -49,12 +53,19 @@ function Mob:create()
 	nb = 1
 	for i=1,#self.matrix-1 do
 		for j=1,#self.matrix[i] do
-			if self.matrix[i][j] == 0  and self.matrix[i+1][j] == 1 and math.random(0,1)==1 then
+			if self.matrix[i][j] == 0  and self.matrix[i+1][j] == 1 and math.random(0,10)==1 then
 				self.a[nb]={}
 				self.a[nb].x = 100*(j-1)+100-self.a.height
 				self.a[nb].y = 100*(i-1)+100-self.a.width
 				self.a[nb].alive = true
 				self.a[nb].life = 5
+				self.a[nb].yVelocity = 0
+				self.a[nb].xVelocity = 0
+				self.a[nb].top = false
+				self.a[nb].bottom = false
+				self.a[nb].right = false
+				self.a[nb].left = false
+
 
 				nb = nb+1
 			end
@@ -102,31 +113,104 @@ end
 function Mob:collideGround(level)
 	for j=1,level.box[1].n-1 do
 		for i=1,nb-1 do
-
+			if self.a[i].alive then
 			if Level.collide(self.a[i].x+5,self.a[i].y,self.a.width-10,5,
 				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
-				self.a[i].top = true
-				print("top")
+				self.a[i].top = false
+			--	print("top")
 			end
 
 			if Level.collide(self.a[i].x+self.a.width-5,self.a[i].y+5,5,self.a.height-10,
 				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
 				self.a[i].right = true
-				print("right")
+			--	print("right")
 			end
 			if Level.collide(self.a[i].x+5,self.a[i].y+self.a.height-5,self.a.width-10,5,
 				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
 				self.a[i].bottom = true
-				print("bottom")
+			--	print("bottom")
 			end
-			if Level.collide(self.a[i].x,self.a[i].y+5,5,self.a.height-5,
+			if Level.collide(self.a[i].x,self.a[i].y+5,5,self.a.height-10,
 				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
 				self.a[i].left = true
-				print("left")
+			--	print("left")
 			end
+		end
 		end
 	end
 end
+
+function Mob:move(dt)
+	for i=1,nb-1 do
+		if self.a[i].alive then
+			print(self.a[i].left,self.a[i].top,
+			self.a[i].right,self.a[i].bottom)
+
+
+
+			if self.a[i].left and self.a[i].right then
+				self.a[i].left = false
+				self.a[i].right = false
+			end
+
+
+			--	self.a[i].yVelocity = 0
+			local dir = math.random(0,15)
+			if dir == 0 and not self.a[i].left then
+				self.a[i].xVelocity = -1*self.a.speed
+				self.a[i].right = false
+			end
+
+			if dir == 1 and not self.a[i].right then
+				self.a[i].xVelocity = self.a.speed
+				self.a[i].left = false
+
+			end
+
+			if dir ==0 and self.a[i].left then
+				self.a[i].xVelocity = self.a.speed
+				self.a[i].left = false
+			end
+
+			if dir ==1 and self.a[i].right then
+				self.a[i].xVelocity = -1*self.a.speed
+				self.a[i].right = false
+
+			end
+
+			if self.a[i].bottom then
+				self.a[i].yVelocity = 0
+				self.a[i].y = self.a[i].y-1
+				self.a[i].bottom = false
+			end
+
+			if self.a[i].left then
+				self.a[i].xVelocity = 0
+				self.a[i].right = false
+
+			end
+			if self.a[i].right then
+				self.a[i].xVelocity = 0
+				self.a[i].left = false
+			end
+
+			if self.a[i].top then
+				self.a[i].yVelocity = 0
+				self.a[i].bottom = false
+
+			end
+
+
+
+
+			self.a[i].yVelocity = self.a[i].yVelocity + gravity*dt
+			self.a[i].y = self.a[i].y + self.a[i].yVelocity*dt
+
+			self.a[i].x = self.a[i].x+self.a[i].xVelocity*dt
+		end
+	end
+end
+
 
 
 

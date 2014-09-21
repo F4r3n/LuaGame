@@ -110,17 +110,24 @@ function Menu:click(x,y)
 			--	ioption = true
 			if fullScreen then
 				fullScreen = false
+				button.string = "Full screen"
 			else
 				fullScreen = true
+				button.string = "Windowed mod"
 			end
 			love.window.setFullscreen(fullScreen)
 
 		end
 
-
 		if Menu.Inside(button.x,button.y,button.width,button.height,x,y) and i==5 then
 			imenu = true
 			ioption = false
+
+
+		end
+
+		if Menu.Inside(button.x,button.y,button.width,button.height,x,y) and i==6 then
+			love.event.quit()
 
 
 		end
