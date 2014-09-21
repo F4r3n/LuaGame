@@ -71,6 +71,7 @@ function love.update(dt)
 end
 
 function love.draw()
+
 	if not imenu and istart then
 
 		game:draw()
@@ -96,8 +97,11 @@ function love.mousepressed(x,y,button)
 	if button == "l" then
 		if imenu or ioption then
 			menu:click(x,y)
-		elseif istart then
+		elseif istart and not game.fin then
 			laser:create(love.mouse.getX(),love.mouse.getY(),player.x,player.y,player.size)
+
+		elseif game.fin then
+			game:nextLevel()
 		end
 	end 
 end
