@@ -22,9 +22,18 @@ local Level={
 			y = nil
 
 		},
+
+	fin = {
+			size = nil,
+			x = nil,
+			y = nil
+		},
+
+
 		g = nil,
 		o = nil,
-		s = nil
+		s = nil,
+		f = nil
 	},
 	jx = nil,
 	jy = nil
@@ -51,6 +60,8 @@ function Level:create()
 	self.box[2].o = 1
 	self.box[3]={}
 	self.box[3].s = 1
+	self.box[4]={}
+	self.box[4].f = 1
 
 
 	for i=1,#self.matrix do
@@ -70,6 +81,12 @@ function Level:create()
 				self.jx = 100*(j-1)
 				self.box[3].s = self.box[3].s +1
 				self.jy = 100*(i-1)
+			
+			elseif self.matrix[i][j] == 4 then
+				self.box[4][self.box[4].f]={fin = {size=100,x=100*(j-1),y=100*(i-1)}}
+				self.box[4].f = self.box[4].f + 1
+
+
 			end
 		end
 	end
@@ -93,6 +110,13 @@ function Level:draw(x,y,size)
 
 		love.graphics.setColor(dblue)
 		love.graphics.rectangle("fill",self.box[3][i].start.x-x+WIDTH/2,self.box[3][i].start.y-y+HEIGHT/2,self.box[3][i].start.size,self.box[3][i].start.size)
+	end
+
+
+	for i=1,self.box[4].f-1 do
+
+		love.graphics.setColor(grey)
+		love.graphics.rectangle("fill",self.box[4][i].fin.x-x+WIDTH/2,self.box[4][i].fin.y-y+HEIGHT/2,self.box[4][i].fin.size,self.box[4][i].fin.size)
 	end
 end
 

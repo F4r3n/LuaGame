@@ -15,7 +15,8 @@ Mob = {
 		xVelocity = 0,
 		yVelocity = 0,
 		speed = 200 ,
-		n = 1
+		n = 1,
+		tot = 1
 
 	},
 
@@ -65,6 +66,7 @@ function Mob:create()
 				self.a[nb].bottom = false
 				self.a[nb].right = false
 				self.a[nb].left = false
+				self.a.n = self.a.n+1
 
 
 				nb = nb+1
@@ -102,6 +104,8 @@ function Mob:hit(laser,x,y,level)
 							self.a[j].alive = false
 							table.remove(self.a,j)
 							nb = nb -1
+							self.a.n = self.a.n + 1
+							self.a.tot = self.a.tot + 1
 						end
 					end
 				end
@@ -116,7 +120,7 @@ function Mob:collideGround(level)
 			if self.a[i].alive then
 			if Level.collide(self.a[i].x+5,self.a[i].y,self.a.width-10,5,
 				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
-				self.a[i].top = false
+				self.a[i].top = true
 			--	print("top")
 			end
 
@@ -143,9 +147,6 @@ end
 function Mob:move(dt)
 	for i=1,nb-1 do
 		if self.a[i].alive then
-			print(self.a[i].left,self.a[i].top,
-			self.a[i].right,self.a[i].bottom)
-
 
 
 			if self.a[i].left and self.a[i].right then
@@ -200,7 +201,7 @@ function Mob:move(dt)
 
 			end
 
-
+			self.a[i].bottom = false
 
 
 			self.a[i].yVelocity = self.a[i].yVelocity + gravity*dt

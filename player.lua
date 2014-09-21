@@ -13,6 +13,8 @@ local Player = {
 	img = love.graphics.newImage("Achilles2.png"),
 	quad = {},
 	i = nil,
+	life = 10,
+	alive = true,
 	dir = 1.5
 
 }
@@ -181,6 +183,32 @@ function Player:move(dt)
 	bottom = false
 
 end
+
+function Player:hit(mob,level)
+
+	for i=1, mob.a.n-1 do
+		if mob.a[i].alive then
+			if level.collide(player.x,player.y,player.size,player.size,
+				mob.a[i].x,mob.a[i].y,mob.a.width,mob.a.height) then
+				if player.life > 0 then
+					player.life = player.life - 1
+					print(player.life)
+				end
+			end
+		end
+
+
+	end
+
+end
+
+function Player:death()
+	if player.life <=0 then
+		player.alive = false
+	end 
+end
+
+
 
 
 
