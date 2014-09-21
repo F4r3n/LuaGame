@@ -7,17 +7,27 @@ Mob = {
 		width = 30,
 		height = 30,
 		attack = 0,
-		alive = true
+		alive = true,
+		bottom = true,
+		left = true,
+		right = true,
+		n = 1
+
 	},
 
 
 	b = {
+
 		x = nil,
 		y = nil,
-		life = nil,
-		width = nil,
-		height = nil,
-		attack = nil
+		life = 5,
+		width = 30,
+		height = 30,
+		attack = 0,
+		alive = true,
+		bottom = true,
+		left = true,
+		right = true
 	},
 
 	index = nil,
@@ -84,6 +94,35 @@ function Mob:hit(laser,x,y,level)
 						end
 					end
 				end
+			end
+		end
+	end
+end
+
+function Mob:collideGround(level)
+	for j=1,level.box[1].n-1 do
+		for i=1,nb-1 do
+
+			if Level.collide(self.a[i].x+5,self.a[i].y,self.a.width-10,5,
+				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
+				self.a[i].top = true
+				print("top")
+			end
+
+			if Level.collide(self.a[i].x+self.a.width-5,self.a[i].y+5,5,self.a.height-10,
+				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
+				self.a[i].right = true
+				print("right")
+			end
+			if Level.collide(self.a[i].x+5,self.a[i].y+self.a.height-5,self.a.width-10,5,
+				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
+				self.a[i].bottom = true
+				print("bottom")
+			end
+			if Level.collide(self.a[i].x,self.a[i].y+5,5,self.a.height-5,
+				level.box[1][j].ground.x,level.box[1][j].ground.y,level.box[1][j].ground.size,level.box[1][j].ground.size) then
+				self.a[i].left = true
+				print("left")
 			end
 		end
 	end

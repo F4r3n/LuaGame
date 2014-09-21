@@ -68,10 +68,13 @@ end
 function love.update(dt)
 
 	if not imenu or istrart then
+		love.graphics.setBackgroundColor(blue)
 		level:collideAll(player)
 		level:collisionLaser(laser,player.x,player.y)
+		mob:collideGround(level)
 		player:move(dt)
 		laser:update(dt,player.x,player.y,player.size)
+		mob:hit(laser,player.x,player.y,level)
 		if love.mouse.isDown("l") then
 		end
 	end
@@ -84,6 +87,7 @@ end
 
 function love.draw()
 	if not imenu and istart then
+
 		level:draw(player.x,player.y,player.size)
 		player:draw()
 		laser:draw()
