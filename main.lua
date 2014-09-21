@@ -25,29 +25,19 @@ quit = false
 timer = 0
 font = love.graphics.newFont("alexis.ttf",20)
 
-LevelBase = require 'levelBase'
-Level = require 'level'
-Player = require 'player'
-Laser = require 'laser'
+--LevelBase = require 'levelBase'
+--Level = require 'level'
+--Player = require 'player'
+--Laser = require 'laser'
+Game = require 'game'
 Menu = require 'menu'
-Mob = require 'mob'
+--Mob = require 'mob'
 
 
 function love.load()
 
-	level = Level.new(niveau)
-	player = Player.new()
-	laser = Laser.new()
-	menu = Menu.new()
-	mob = Mob.new(niveau)
-
-
-	level:create()
-	mob:create()
-	player.x = level.jx
-	player.y = level.jy
 	--	player:location()
-
+	game =Game.new()
 	love.graphics.setColor(grey)
 	love.window.setMode(WIDTH,HEIGHT)
 	love.window.setTitle("Bounce the ball")
@@ -68,14 +58,7 @@ end
 function love.update(dt)
 
 	if not imenu or istrart then
-		love.graphics.setBackgroundColor(blue)
-		level:collideAll(player)
-		level:collisionLaser(laser,player.x,player.y)
-		mob:collideGround(level)
-		mob:move(dt)
-		player:move(dt)
-		laser:update(dt,player.x,player.y,player.size)
-		mob:hit(laser,player.x,player.y,level)
+		game.update(dt)
 		if love.mouse.isDown("l") then
 		end
 	end
@@ -89,14 +72,7 @@ end
 function love.draw()
 	if not imenu and istart then
 
-		level:draw(player.x,player.y,player.size)
-		player:draw()
-		laser:draw()
-		mob:draw(player.x,player.y,player.size)
-		if info then
-			love.graphics.print("FPS "..tostring(love.timer.getFPS()),10,10)
-		end
-
+		game.draw()
 
 	elseif imenu then
 		love.graphics.setColor(grey)
