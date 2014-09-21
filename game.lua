@@ -52,7 +52,9 @@ function Game:update(dt)
 		laser:update(dt,player.x,player.y,player.size)
 		mob:hit(laser,player.x,player.y,level)
 		self:win()
-		player:hit(mob,level)
+		player:touch(mob,level)
+		player:invicible(dt)
+		player:death()
 	end
 
 end

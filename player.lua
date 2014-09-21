@@ -15,6 +15,9 @@ local Player = {
 	i = nil,
 	life = 10,
 	alive = true,
+	time = 0,
+	untouchable = false,
+	hit = false,
 	dir = 1.5
 
 }
@@ -30,6 +33,8 @@ function Player.new()
 	self.side = {}
 	self.top = {}
 	self.i = 1
+	self.life = 5
+
 	self.quad = {love.graphics.newQuad(5,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(45,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(86,72,40,43,self.img:getWidth(),self.img:getHeight()),
@@ -49,9 +54,9 @@ return self
 end
 
 function Player:draw()
---	love.graphics.setColor(white)
---	love.graphics.rectangle("fill",WIDTH/2,HEIGHT/2,self.size,self.size)
---	print(self.img:getWidth(),self.quad[self.i])
+	--	love.graphics.setColor(white)
+	--	love.graphics.rectangle("fill",WIDTH/2,HEIGHT/2,self.size,self.size)
+	--	print(self.img:getWidth(),self.quad[self.i])
 	love.graphics.setColor(white)
 
 	if self.dir < 0 then
@@ -70,30 +75,32 @@ function Player:move(dt)
 		self.y = self.y - 1
 	end
 
-	if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
+	if not love.keyboard.isDown("q") then
+		if love.keyboard.isDown("d") or love.keyboard.isDown("right") then
 
-		timer = (1/5+timer)%2
+			timer = (1/5+timer)%2
 
-		self.i = (self.i+math.floor(timer))%12
-		self.dir =-1.5
+			self.i = (self.i+math.floor(timer))%12
+			self.dir =-1.5
 
-		if math.floor(timer) == 1 then
-			timer = 0
+			if math.floor(timer) == 1 then
+				timer = 0
+			end
+
+			if self.i == 0 then
+				self.i = 1
+			end
+			if not right then
+				self.xVelocity = self.speed
+				left = false
+
+			elseif right then  
+				self.xVelocity = 0
+				--	self.x = self.x - 1
+				right = false
+			end
+
 		end
-
-		if self.i == 0 then
-			self.i = 1
-		end
-		if not right then
-			self.xVelocity = self.speed
-			left = false
-
-		elseif right then  
-			self.xVelocity = 0
-		--	self.x = self.x - 1
-			right = false
-		end
-
 	end
 
 
@@ -124,22 +131,22 @@ function Player:move(dt)
 
 	if left then
 		self.xVelocity = 0
-	--	self.x = self.x + 1
-	--	left = false
+		--	self.x = self.x + 1
+		--	left = false
 
 	end
 
 	if right then
 		self.xVelocity = 0
-	--	self.x = self.x - 1 
-	--	right = false
+		--	self.x = self.x - 1 
+		--	right = false
 
 	end
 
 	if top then
 		self.yVelocity = 0
 		top = false
-	--	self.y = self.y +1
+		--	self.y = self.y +1
 	end
 
 	if bottom then
@@ -184,15 +191,21 @@ function Player:move(dt)
 
 end
 
-function Player:hit(mob,level)
-
+function Player:touch(mob,level)
+--	print(self.untouchable)
 	for i=1, mob.a.n-1 do
-		if mob.a[i].alive then
-			if level.collide(player.x,player.y,player.size,player.size,
-				mob.a[i].x,mob.a[i].y,mob.a.width,mob.a.height) then
-				if player.life > 0 then
-					player.life = player.life - 1
-					print(player.life)
+		if mob.a[i] ~= nil then
+			if mob.a[i].alive then
+				if not self.untouchable then
+					if level.collide(self.x,self.y,self.size,self.size,
+						mob.a[i].x,mob.a[i].y,mob.a.width,mob.a.height) then
+						if self.life > 0 then
+							self.life = self.life - 1
+							self.hit = true
+							self.untouchable = true
+							print(self.life)
+						end
+					end
 				end
 			end
 		end
@@ -203,10 +216,23 @@ function Player:hit(mob,level)
 end
 
 function Player:death()
-	if player.life <=0 then
-		player.alive = false
+	if self.life <=0 then
+		self.alive = false
+		print("YOU ARE DEAD")
 	end 
 end
+
+function Player:invicible(dt)
+	if self.hit then
+		self.time = self.time + dt
+		if self.time > 2 then
+			self.hit = false
+			self.untouchable = false
+			self.time = 0
+		end
+	end
+end
+
 
 
 
