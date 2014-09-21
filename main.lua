@@ -24,6 +24,7 @@ fullScreen = false
 quit = false
 timer = 0
 font = love.graphics.newFont("alexis.ttf",20)
+font2 = love.graphics.newFont("alexis.ttf",40)
 
 --LevelBase = require 'levelBase'
 --Level = require 'level'
@@ -58,7 +59,7 @@ end
 function love.update(dt)
 
 	if not imenu or istrart then
-		game.update(dt)
+		game:update(dt)
 		if love.mouse.isDown("l") then
 		end
 	end
@@ -72,7 +73,7 @@ end
 function love.draw()
 	if not imenu and istart then
 
-		game.draw()
+		game:draw()
 
 	elseif imenu then
 		love.graphics.setColor(grey)
