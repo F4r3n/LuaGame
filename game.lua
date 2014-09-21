@@ -1,8 +1,9 @@
 local Game = {
 
-score = nil,
-niveau = nil,
-time = nil
+	score = nil,
+	niveau = nil,
+	time = nil,
+	fin = false
 
 
 }
@@ -31,33 +32,73 @@ function Game.new()
 	mob:create()
 	player.x = level.jx
 	player.y = level.jy
+	self.time = 0
+	self.fin = false
 
 	return self
 end
 
 
-function Game.update(dt)
+function Game:update(dt)
 
-		love.graphics.setBackgroundColor(blue)
-		level:collideAll(player)
-		level:collisionLaser(laser,player.x,player.y)
-		mob:collideGround(level)
-		mob:move(dt)
-		player:move(dt)
-		laser:update(dt,player.x,player.y,player.size)
-		mob:hit(laser,player.x,player.y,level)
+	if not self.fin then
+		self.time = self.time + dt
+	love.graphics.setBackgroundColor(blue)
+	level:collideAll(player)
+	level:collisionLaser(laser,player.x,player.y)
+	mob:collideGround(level)
+	mob:move(dt)
+	player:move(dt)
+	laser:update(dt,player.x,player.y,player.size)
+	mob:hit(laser,player.x,player.y,level)
+	self:win()
+end
 
 end
 
-function Game.draw()
+function Game:draw()
 
-		level:draw(player.x,player.y,player.size)
-		player:draw()
-		laser:draw()
-		mob:draw(player.x,player.y,player.size)
-		if info then
-			love.graphics.print("FPS "..tostring(love.timer.getFPS()),10,10)
+
+
+	if self.fin then
+		self:result()
+	else
+	level:draw(player.x,player.y,player.size)
+	player:draw()
+	laser:draw()
+	mob:draw(player.x,player.y,player.size)
+	if info then
+		love.graphics.print("FPS "..tostring(love.timer.getFPS()),10,10)
+	end
+
+	love.graphics.print("Timer "..tostring(math.floor(self.time)),WIDTH/2,10)
+end
+
+end
+
+function Game:win()
+
+	for i=1, level.box[4].f-1 do
+		if level.collide(player.x,player.y,player.size,player.size,
+			level.box[4][i].fin.x,level.box[4][i].fin.y,level.box[4][i].fin.size,level.box[4][i].fin.size) then
+			self.fin = true
 		end
+	end
+
+end
+
+function Game:result()
+	love.graphics.setColor(grey)
+	love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+
+	love.graphics.setColor(red)
+
+	love.graphics.setFont(font2)
+	love.graphics.print("YOU WIN ",WIDTH/2-100,HEIGHT/2-100)
+	love.graphics.setFont(font)
+	love.graphics.print(math.floor(self.time),WIDTH/2,HEIGHT/2+20)
+	love.graphics.print("Vous avez tué "..mob.a.tot-1.." sur "..mob.a.n-1,WIDTH/2,HEIGHT/2+40)
+
 
 end
 
