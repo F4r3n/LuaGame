@@ -41,7 +41,7 @@ end
 
 function Game:update(dt)
 
-	if not self.fin and self.alive then
+	if not self.fin and player.alive then
 		self.time = self.time + dt
 		love.graphics.setBackgroundColor(blue)
 		level:collideAll(player)
@@ -84,7 +84,7 @@ function Game:draw()
 
 
 
-	if self.fin then
+	if self.fin and player.alive then
 		self:result()
 
 	elseif not player.alive then
