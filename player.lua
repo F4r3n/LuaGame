@@ -192,7 +192,7 @@ function Player:move(dt)
 end
 
 function Player:touch(mob,level)
---	print(self.untouchable)
+	--	print(self.untouchable)
 	for i=1, mob.a.n-1 do
 		if mob.a[i] ~= nil then
 			if mob.a[i].alive then
@@ -216,10 +216,12 @@ function Player:touch(mob,level)
 end
 
 function Player:death()
-	if self.life <=0 then
-		self.alive = false
-		print("YOU ARE DEAD")
-	end 
+	if self.alive then
+		if self.life <=0 then
+			self.alive = false
+			print("YOU ARE DEAD")
+		end 
+	end
 end
 
 function Player:invicible(dt)

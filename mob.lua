@@ -149,6 +149,7 @@ function Mob:move(dt)
 		if self.a[i].alive then
 
 
+
 			if self.a[i].left and self.a[i].right then
 				self.a[i].left = false
 				self.a[i].right = false

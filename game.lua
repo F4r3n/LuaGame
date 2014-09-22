@@ -41,7 +41,7 @@ end
 
 function Game:update(dt)
 
-	if not self.fin then
+	if not self.fin and self.alive then
 		self.time = self.time + dt
 		love.graphics.setBackgroundColor(blue)
 		level:collideAll(player)
@@ -55,6 +55,9 @@ function Game:update(dt)
 		player:touch(mob,level)
 		player:invicible(dt)
 		player:death()
+
+	elseif not player.alive then
+		self.time= self.time
 	end
 
 end
@@ -83,6 +86,9 @@ function Game:draw()
 
 	if self.fin then
 		self:result()
+
+	elseif not player.alive then
+		self:deadResult()
 	else
 		level:draw(player.x,player.y,player.size)
 		player:draw()
@@ -125,5 +131,22 @@ function Game:result()
 
 end
 
+function Game:deadResult()
+
+
+	love.graphics.setColor(grey)
+	love.graphics.rectangle("fill",0,0,WIDTH,HEIGHT)
+	
+
+	love.graphics.setColor(red)
+
+	love.graphics.setFont(font2)
+	love.graphics.print("YOU are Dead ",WIDTH/2-100,HEIGHT/2-100)
+	love.graphics.setFont(font)
+	love.graphics.print(math.floor(self.time),WIDTH/2,HEIGHT/2+20)
+	love.graphics.print("Vous avez tué "..(mob.a.tot-1).." sur "..mob.a.n-1,WIDTH/2,HEIGHT/2+40)
+
+
+end
 return Game
 
