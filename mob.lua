@@ -52,6 +52,7 @@ end
 
 function Mob:create()
 	nb = 1
+	self.a.n =1
 	for i=1,#self.matrix-1 do
 		for j=1,#self.matrix[i] do
 			if self.matrix[i][j] == 0  and self.matrix[i+1][j] == 1 and math.random(0,10)==1 then

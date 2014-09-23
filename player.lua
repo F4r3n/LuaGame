@@ -11,6 +11,7 @@ local Player = {
 	side = {},
 	top = {},
 	img = love.graphics.newImage("Achilles2.png"),
+	heart = love.graphics.newImage("heart.png"),
 	quad = {},
 	i = nil,
 	life = 10,
@@ -34,6 +35,7 @@ function Player.new()
 	self.top = {}
 	self.i = 1
 	self.life = 5
+	self.alive  = true
 
 	self.quad = {love.graphics.newQuad(5,72,35,43,self.img:getWidth(),self.img:getHeight()),
 	love.graphics.newQuad(45,72,35,43,self.img:getWidth(),self.img:getHeight()),
@@ -219,6 +221,7 @@ function Player:death()
 	if self.alive then
 		if self.life <=0 then
 			self.alive = false
+			self.fin = true
 			print("YOU ARE DEAD")
 		end 
 	end
@@ -235,9 +238,16 @@ function Player:invicible(dt)
 	end
 end
 
+function Player:displayLife()
+	if self.alive then
+		love.graphics.setColor(white)
+		for i=1,self.life do
+			love.graphics.draw(self.heart,10+(self.heart:getWidth()+10)*i,10)
+		end
+	end
 
 
-
+end
 
 
 return Player

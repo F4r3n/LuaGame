@@ -94,6 +94,8 @@ function Game:draw()
 		player:draw()
 		laser:draw()
 		mob:draw(player.x,player.y,player.size)
+
+		player:displayLife()
 		if info then
 			love.graphics.print("FPS "..tostring(love.timer.getFPS()),10,10)
 		end
